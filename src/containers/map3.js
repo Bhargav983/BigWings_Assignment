@@ -58,32 +58,32 @@ const [position, setPosition] = useState({
 useEffect(
     ()=>{getdirections()},[]
 )
-const handleDirections=()=>{
+const handleDirections=(waypt1,waypt2)=>{
     const data={
         source:{latitude: 17.4368, longitude:78.4007},
         destination:{latitude: 17.4421, longitude:78.3772},
         params:[
-            {key:"travelmode",value:"walking"},
+            {key:"travelmode",value:"driving"},
             {key:"dir_action",value:"navigate"}
-        ]
+        ],
+        waypoints: [
+          waypt1,waypt2]
             
     }
     getDirections(data)
 }
 const getdirections=async()=>{
     try{
-        //  let startLoc="17.4368, 78.4007";
-        // let destinationLoc= "17.4421, 78.3772";
+         let startLoc="17.4368, 78.4007";
+        let destinationLoc= "17.4421, 78.3772";
     
-        let startLoc = (curLat+", "+curLong).toString()
-      let destinationLoc = (desLat+","+desLong).toString()
+      //   let startLoc = (curLat+", "+curLong).toString()
+      // let destinationLoc = (desLat+","+desLong).toString()
       console.log(typeof(startLoc))
-        let resp=await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}
-        &mode="walking"&key=AIzaSyDB4WV90TT5-rMiWwqNLIAUidKCc2-n4dE`)
-        setTimeout(() => {
-         },3000);
+        let resp=await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&mode="DRIVING"&key=AIzaSyDB4WV90TT5-rMiWwqNLIAUidKCc2-n4dE`)
+        
         let respJson = await resp.json();
-        // console.log("respJson=",respJson)
+        console.log("respJson=",respJson)
         // console.log("respJson=",Polyline.decode(respJson.routes[0].overview_polyline.points))
         if(respJson.routes[0].overview_polyline){
 
@@ -99,9 +99,18 @@ const getdirections=async()=>{
           let index2= parseInt(coords.length * 2.0/ 3.0)
           setwaypts1(coords[index1])
           setwaypts2(coords[index2])
-          console.log('waypts1',waypts1.latitude)
+          console.log('index=',index1,index2)
+             console.log('coords length =',coords.length)
+
+             setwaypts1(coords[index1])
+             setwaypts2(coords[index2])
+          
+             setwaypts1(coords[index1])
+             setwaypts2(coords[index2])
+
+           console.log('waypts1',waypts1.latitude)
           console.log('waypts2',waypts2)
-             console.log(coords.length)
+          handleDirections(coords[index1],coords[index2]);
         }
        
     }
@@ -111,7 +120,9 @@ const getdirections=async()=>{
 }
   return (
     <View style={StyleSheet.absoluteFill}>
-
+       <Marker  coordinate={origin} title={'Starting Point'}  pinColor={'green'} />  
+          <Marker  coordinate={destination} title={'Reaching Point'}  pinColor={'red'} />
+{/* 
     <MapView 
      initialRegion={{
       latitude: LATITUDE,
@@ -125,11 +136,7 @@ const getdirections=async()=>{
            <Marker  coordinate={origin} title={'Starting Point'}  pinColor={'green'} />  
           <Marker  coordinate={destination} title={'Reaching Point'}  pinColor={'red'} />  
           
-         {/* {
-         (waypts1.latitude!=='') ?
-          (<Marker coordinate={waypts1} title={'WayPoint 1'} pinColor={'blue'}/>
-          <Marker coordinate={waypts2} title={'WayPoint 2'} pinColor={'blue'}/>:null)
-        }  */}
+        
        
     <MapViewDirections
       origin={origin}
@@ -150,7 +157,7 @@ const getdirections=async()=>{
       }}
       resetOnChange={false}
     />
-  </MapView>
+  </MapView> */}
   </View>
   )
 }

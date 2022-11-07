@@ -65,7 +65,7 @@ useEffect(()=>{
   const gotoMap=()=>{
     console.log('curLat',curLat);
         console.log('curLong',curLong);
-    // navigation.navigate('Map',{OriLat:oriLat.toString(),OriLong:oriLong.toString(),curLat:curLat.toString(),curLong:curLong.toString()});
+    
     navigation.navigate('Map',{desLat:oriLat.toString(),desLong:oriLong.toString(),curLat:curLat.toString(),curLong:curLong.toString()});
   }
   const onListItemPress = details => {
